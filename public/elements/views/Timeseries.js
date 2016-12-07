@@ -1,7 +1,7 @@
 /**
 Global variables
 **/
-var devConfig = '';
+var connectedDeviceConfig = '';
 var accessToken = '';
 var selectTag=0; //默认选定的
 
@@ -52,12 +52,12 @@ This method quries UAA and Timeseries directly
 **/
 function updateChart (num) {
     var uaaRequest = new XMLHttpRequest();
-    var auth = devConfig.base64ClientCredential;
-    var uaaParams = "grant_type=client_credentials&client_id=" + devConfig.clientId;
+    var auth = connectedDeviceConfig.base64ClientCredential;
+    var uaaParams = "grant_type=client_credentials&client_id=" + connectedDeviceConfig.clientId;
 		var newdate;
 		var linedata;
 
-    uaaRequest.open('GET', devConfig.uaaUri + "/oauth/token?" + uaaParams, true);
+    uaaRequest.open('GET', connectedDeviceConfig.uaaUri + "/oauth/token?" + uaaParams, true);
     uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
     uaaRequest.onreadystatechange = function() {
@@ -70,7 +70,7 @@ function updateChart (num) {
         };
 
         var timeSeriesGetData = new XMLHttpRequest();
-        var datapointsUrl = devConfig.timeseriesURL;
+        var datapointsUrl = connectedDeviceConfig.timeseriesURL;
         timeSeriesGetData.open('POST', datapointsUrl + "/latest", true);
 
 
@@ -82,7 +82,7 @@ function updateChart (num) {
         });
         }
 
-        timeSeriesGetData.setRequestHeader("Predix-Zone-Id", devConfig.timeseriesZone);
+        timeSeriesGetData.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.timeseriesZone);
         timeSeriesGetData.setRequestHeader("Authorization", accessToken);
         timeSeriesGetData.setRequestHeader("Content-Type", "application/json");
 
@@ -122,28 +122,38 @@ function updateChart (num) {
 Method to generate the list of tags to choose from
 **/
 function configureTagsTimeseriesData() {
-  getdevConfig().then(
+  getConnectedDeviceConfig().then(
     function(response) {
-      devConfig = JSON.parse(response);
+			console.log(response);
+      // connectedDeviceConfig = JSON.parse(response);
+			connectedDeviceConfig={"note": "Out of the box, the predix-seed app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
+	    "clientId": "kepware",
+	    "uaaUri": "https://ad3c70da-70ba-4b79-afad-1ec3cecdbb16.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+	    "base64ClientCredential": "a2Vwd2FyZTprZXB3YXJl",
+	    "appUri": "http://localhost:5000",
+	    "timeseriesURL": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+	    "timeseriesZone": "d68e28b9-2f6d-4e95-bbdb-d07e070f8827",
+	    "assetURL": "{Asset URL from VCAPS}",
+	    "assetZoneId": "{The Zone ID for the Asset Service Created}"}
       {
         select = document.getElementById('tagList');
         if (select) {
           var timeSeriesUaaRequest = new XMLHttpRequest();
-          var timeSeriesAuth = devConfig.base64ClientCredential;
-          var uaaParams = "grant_type=client_credentials&client_id=" + devConfig.clientId;
-          timeSeriesUaaRequest.open('GET', devConfig.uaaUri + "/oauth/token?" + uaaParams, true);
+          var timeSeriesAuth = connectedDeviceConfig.base64ClientCredential;
+          var uaaParams = "grant_type=client_credentials&client_id=" + connectedDeviceConfig.clientId;
+          timeSeriesUaaRequest.open('GET', connectedDeviceConfig.uaaUri + "/oauth/token?" + uaaParams, true);
           timeSeriesUaaRequest.setRequestHeader("Authorization", "Basic " + timeSeriesAuth);
           timeSeriesUaaRequest.onreadystatechange = function() {
             if (timeSeriesUaaRequest.readyState == 4) {
               var res = JSON.parse(timeSeriesUaaRequest.responseText);
               accessToken = res.token_type + ' ' + res.access_token;
               var timeSeriesGetAllTags = new XMLHttpRequest();
-              var datapointsUrl = devConfig.timeseriesURL;
+              var datapointsUrl = connectedDeviceConfig.timeseriesURL;
               var getAllTagsUrl = datapointsUrl.replace("datapoints", "tags");
 
               timeSeriesGetAllTags.open('GET', getAllTagsUrl, true);
 
-              timeSeriesGetAllTags.setRequestHeader("Predix-Zone-Id", devConfig.timeseriesZone);
+              timeSeriesGetAllTags.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.timeseriesZone);
               timeSeriesGetAllTags.setRequestHeader("Authorization", accessToken);
               timeSeriesGetAllTags.setRequestHeader("Content-Type", "application/json");
 
@@ -199,15 +209,14 @@ function configureTagsTimeseriesData() {
 /**
 Method to make the necessary rest call and get the configurations from the server
 **/
-function getdevConfig() {
+function getConnectedDeviceConfig() {
   return new Promise(function(resolve, reject) {
     var request = new XMLHttpRequest();
-    request.open('GET', '/secure/data');
+    request.open('GET', '/#/securepage/datas');
     request.onload = function() {
       if (request.status == 200) {
         resolve(request.response);
-      }
-      else {
+      }else {
         reject(Error(request.statusText));
       }
     };

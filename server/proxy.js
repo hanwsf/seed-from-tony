@@ -163,6 +163,7 @@ router.use('/', function(req,res,next){
 	}
 });
 
+
 // TODO: Support for multiple instances of the same service.
 var setProxyRoutes = function() {
 	var vcapString = process.env.VCAP_SERVICES;
@@ -176,6 +177,8 @@ var setProxyRoutes = function() {
 	});
 };
 setProxyRoutes();
+
+
 
 module.exports = {
 	router: router,

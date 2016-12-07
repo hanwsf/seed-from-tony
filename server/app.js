@@ -19,10 +19,30 @@ var config = require('./predix-config');
 // configure passport for authentication with UAA
 var passportConfig = require('./passport-config');
 
+//个人添加
+// Setting up option for UAA
+var clientId = '';
+var uaaUri = '';
+var applicationUrl = '';
+var base64ClientCredential = '';
+var timeseriesZone = '';
+var timeseriesURL = '';
+//个人添加
+
 // if running locally, we need to set up the proxy from local config file:
 var node_env = process.env.node_env || 'development';
 if (node_env === 'development') {
   var devConfig = require('./localConfig.json')[node_env];
+
+  //个人添加
+  clientId = config.clientId;
+  uaaUri = config.uaaURL;
+  base64ClientCredential  = config.base64ClientCredential;
+  applicationUrl = config.appURL;
+  timeseriesZone = config.timeseriesZoneId;
+  timeseriesURL = config.timeseriesURL;
+  //个人添加
+
 	proxy.setServiceConfig(config.buildVcapObjectFromLocalConfig(devConfig));
 	proxy.setUaaConfig(devConfig);
 }
@@ -41,6 +61,30 @@ if (uaaIsConfigured) {
        SETTING UP EXRESS SERVER
 ***********************************************************************/
 var app = express();
+
+//个人添加
+var uaaConfig = {
+    clientId: clientId,
+    uaaUri : uaaUri,
+    defaultClientRoute : '/index.html',
+    base64ClientCredential: base64ClientCredential,
+    callbackUrl: applicationUrl+'/callback',
+    appUrl: applicationUrl,
+    timeseriesZone: timeseriesZone,
+    timeseriesURL: timeseriesURL
+  };
+  console.log('************'+node_env+'******************');
+  console.log('uaaConfig.clientId = ' +uaaConfig.clientId );
+  console.log('uaaConfig.uaaUri = ' +uaaConfig.uaaUri );
+  console.log('uaaConfig.defaultClientRoute = ' +uaaConfig.defaultClientRoute );
+  console.log('uaaConfig.base64ClientCredential = ' +uaaConfig.base64ClientCredential );
+  console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
+  console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
+  console.log('uaaConfig.timeseriesZone = ' +uaaConfig.timeseriesZone );
+  console.log('uaaConfig.timeseriesURL = ' +uaaConfig.timeseriesURL );
+  console.log('*******************************');
+  app.set('connectedDeviceConfig', uaaConfig);
+//个人添加
 
 app.set('trust proxy', 1);
 app.use(cookieParser('predixsample'));
@@ -90,7 +134,9 @@ if (uaaIsConfigured) {
   app.get('/login',passport.authenticate('predix', {'scope': ''}), function(req, res) {
     // The request will be redirected to Predix for authentication, so this
     // function will not be called.
+
   });
+
 
   // access real Predix services using this route.
   // the proxy will add UAA token and Predix Zone ID.
@@ -108,21 +154,21 @@ if (uaaIsConfigured) {
   	res.redirect('/#/dashboards');
     });
 //以下注释掉，直接跳转到dashboards界面
-  // //secure route checks for authentication
-  // app.get('/secure', passport.authenticate('main', {
-  // 	noredirect: true //Don't redirect a user to the authentication page, just show an error
-  //   }), function(req, res) {
-  // 	console.log('Accessing the secure route');
-  //   // modify this to send a secure.html file if desired.
-  // 	res.send('<h2>This is a sample secure route.</h2>');
-  // });
+  //secure route checks for authentication
+  app.get('/#/securepage/datas', passport.authenticate('main', {
+  	noredirect: true //Don't redirect a user to the authentication page, just show an error
+    }), function(req, res) {
+      console.log('Accessing the secure section ...'+path.join(__dirname + '/securepage-view.html'))
+      res.send(connectedDeviceConfig);
+  });
   // tutorial要求加上这一段
   app.get('/', passport.authenticate('main', {
     noredirect: false // redirect a user to the authentication page
     }),
     express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public'))
   );
-  app.use(express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public'))); //自己添加测试
+  app.use(express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public'))); //自己添加
+
 }
 
 //logout route

@@ -5,7 +5,7 @@
 
 
 
-  <dom-module id="securepage-view">
+  <dom-module id="securepage-view" onclick="configureTagsTimeseriesData();">
     <template>
       <script type="text/javascript" src="smoothie.js"></script>
       <script type="text/javascript" src="Timeseries.js"></script>
@@ -24,6 +24,7 @@
       	  </tr>
       	  <tr>
       	  <td><button type="button" class="timeseries_button" id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
+            <button type="button" class="timeseries_button" onclick="configureTagsTimeseriesData();">Submit2</button>
       		<p id="errorMessage"></p>
       		</td>
         </tr></table>
@@ -45,7 +46,7 @@
         is: 'securepage-view',
         properties: {},
         ready: function() {
-          console.log('blankpage-view ready()')
+          console.log('securepage-view ready()');
         }
       });
     </script>
