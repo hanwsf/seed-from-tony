@@ -124,7 +124,7 @@ Method to generate the list of tags to choose from
 function configureTagsTimeseriesData() {
   getConnectedDeviceConfig().then(
     function(response) {
-			console.log(response);
+			// console.log(response);
       // connectedDeviceConfig = JSON.parse(response);
 			connectedDeviceConfig={"note": "Out of the box, the predix-seed app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
 	    "clientId": "kepware",
@@ -162,7 +162,7 @@ function configureTagsTimeseriesData() {
 									smoothie.addTimeSeries(selectline,{lineWidth:2,strokeStyle:'#00ff00'});
 									smoothie.streamTo(document.getElementById("realtimechart"));
 
-									pxsimplechart=document.querySelector('px-simple-line-chart'); //获取simple-line-chart 对象
+									pxsimplechart=document.getElementById('realtimechart4'); //获取simple-line-chart 对象
 
                   var data = JSON.parse(timeSeriesGetAllTags.responseText);
 

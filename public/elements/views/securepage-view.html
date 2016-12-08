@@ -5,12 +5,12 @@
 
 
 
-  <dom-module id="securepage-view" onclick="configureTagsTimeseriesData();">
+  <dom-module id="securepage-view">
     <template>
       <script type="text/javascript" src="smoothie.js"></script>
-      <script type="text/javascript" src="Timeseries.js"></script>
+      <script type="text/javascript" src="Timeseries.js" onload="configureTagsTimeseriesData();"></script>
 
-      <div class="container" onload="configureTagsTimeseriesData();">
+      <div class="container" >
           <h2>Welcome to a Secure Page.</h2>
       	<div class="div1" style=" width:1000px; height:1000px;" >
       	<h1>Predix Real Time Chart</h1>
@@ -24,7 +24,6 @@
       	  </tr>
       	  <tr>
       	  <td><button type="button" class="timeseries_button" id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
-            <button type="button" class="timeseries_button" onclick="configureTagsTimeseriesData();">Submit2</button>
       		<p id="errorMessage"></p>
       		</td>
         </tr></table>
@@ -35,7 +34,7 @@
 
       	<br><br><br><br><br><br><br>
         <div class="chartarea" style=" width:600px; height:400px;float:right" >
-      		<px-simple-line-chart id="realtimechart4" width="580" height="400" columns="15" rows="10"  ></px-simple-line-chart>
+      		<px-simple-line-chart id="realtimechart4" width="580" height="400" columns="15" rows="10"></px-simple-line-chart>
       	</div>
 
        </div>
