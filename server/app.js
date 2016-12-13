@@ -134,9 +134,7 @@ if (uaaIsConfigured) {
   app.get('/login',passport.authenticate('predix', {'scope': ''}), function(req, res) {
     // The request will be redirected to Predix for authentication, so this
     // function will not be called.
-
   });
-
 
   // access real Predix services using this route.
   // the proxy will add UAA token and Predix Zone ID.
@@ -154,13 +152,13 @@ if (uaaIsConfigured) {
   	res.redirect('/#/dashboards');
     });
 //以下注释掉，直接跳转到dashboards界面
-  //secure route checks for authentication
-  app.get('/#/securepage/datas', passport.authenticate('main', {
-  	noredirect: true //Don't redirect a user to the authentication page, just show an error
-    }), function(req, res) {
-      console.log('Accessing the secure section ...'+path.join(__dirname + '/securepage-view.html'))
-      res.send(connectedDeviceConfig);
-  });
+  // //secure route checks for authentication
+  // app.get('/#/securepage/datas', passport.authenticate('main', {
+  // 	noredirect: true //Don't redirect a user to the authentication page, just show an error
+  //   }), function(req, res) {
+  //     console.log('Accessing the secure section ...'+path.join(__dirname + '/securepage-view.html'))
+  //     res.send(connectedDeviceConfig);
+  // });
   // tutorial要求加上这一段
   app.get('/', passport.authenticate('main', {
     noredirect: false // redirect a user to the authentication page

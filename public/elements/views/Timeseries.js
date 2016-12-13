@@ -13,7 +13,7 @@ var lines = new Array();  //用来存放数据线
 // }
 var lineData=[];
 var pxdata=new Array();
-var pxsimplechart
+var pxsimplechart=document.getElementById('realtimechart4'); //获取simple-line-chart 对象
 
 var tagNames = new Array();
 //millisPerPixel = 900 means 15 minutes, 1800 means 30 minutes, 3600 means 1 hour
@@ -72,7 +72,6 @@ function updateChart (num) {
         var timeSeriesGetData = new XMLHttpRequest();
         var datapointsUrl = connectedDeviceConfig.timeseriesURL;
         timeSeriesGetData.open('POST', datapointsUrl + "/latest", true);
-
 
         var tags = tagNames[num].split(",");
         for (i=0; i < tags.length; i++)
@@ -135,6 +134,7 @@ function configureTagsTimeseriesData() {
 	    "timeseriesZone": "d68e28b9-2f6d-4e95-bbdb-d07e070f8827",
 	    "assetURL": "{Asset URL from VCAPS}",
 	    "assetZoneId": "{The Zone ID for the Asset Service Created}"}
+
       {
         select = document.getElementById('tagList');
         if (select) {
@@ -162,7 +162,7 @@ function configureTagsTimeseriesData() {
 									smoothie.addTimeSeries(selectline,{lineWidth:2,strokeStyle:'#00ff00'});
 									smoothie.streamTo(document.getElementById("realtimechart"));
 
-									pxsimplechart=document.getElementById('realtimechart4'); //获取simple-line-chart 对象
+
 
                   var data = JSON.parse(timeSeriesGetAllTags.responseText);
 

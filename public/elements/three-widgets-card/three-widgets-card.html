@@ -13,7 +13,7 @@
 <dom-module id="three-widgets-card">
 
   <template>
-
+    <script type="text/javascript" src="../../UpdateRealData.js" onload="UpdateRealData('test','Compressor-2017:Temperature');"></script>
     <!-- apply imported style module -->
     <style include="three-widgets-card-styles"></style>
 
@@ -38,18 +38,22 @@
             </div>
           </div>
         </div>
-        <px-simple-line-chart
-          line-data="[[_simpleDataValuesB.data.values]]"
+        <px-simple-line-chart id="test"
+
           width="auto"
-          max="10"
-          min="0"
-          threshold="5">
+          >
         </px-simple-line-chart>
-        <iron-ajax
+
+        <!-- <iron-ajax
           url="/api/time-series/simple-data/2"
           last-response="{{_simpleDataValuesB}}"
           auto>
-        </iron-ajax>
+
+            line-data="[[_simpleDataValuesB.data.values]]"
+            max="10"
+            min="0"
+            threshold="5"
+        </iron-ajax> -->
       </div>
       <div class="widget-2">
         <h1 class="epsilon">
@@ -89,6 +93,108 @@
   <script>
     Polymer({
       is: 'three-widgets-card'
+
+      // properties: {
+      //
+      //   _nodeUri: {
+      //     type: String
+      //   },
+      //   _decksUrl: {
+      //     type: String,
+      //     computed: '_computeDecksUrl(_selectedContextTag, viewServiceBaseUrl)'
+      //   },
+      //   _selectedContextTag: {
+      //     type: String,
+      //     value: ''
+      //   },
+      //   viewServiceBaseUrl: {
+      //     type: String,
+      //     value: '/api/view-service/'
+      //   },
+      //   _selectedDeckId: {
+      //     type: String,
+      //     computed: '_computeSelectedDeckId(_selectedDeck)'
+      //   }
+      // },
+      //
+      // _computeDecksUrl: function() {
+      //   if(this._selectedContextTag) {
+      //     return this.viewServiceBaseUrl + "decks?tag=" + this._selectedContextTag;
+      //   } else {
+      //     return this.viewServiceBaseUrl + "decks";
+      //   }
+      // },
+      //
+      // _computeSelectedDeckId: function() {
+      //   if(this._selectedDeck) {
+      //     return this._selectedDeck.id;
+      //   }
+      // },
+      //
+      // ready: function ready() {
+      //   var _this = this;
+      //   this.$.contextBrowser.handlers = {
+      //     // getChildren fires when a node is 'selected'
+      //     getChildren: function(parent, newIndex) {
+      //       return _this._getChildren(parent);
+      //     },
+      //     // itemOpenHandler fires when a node's 'open' link is clicked
+      //     itemOpenHandler: function(item) {
+      //       return _this._itemOpenHandler(item);
+      //     }
+      //   };
+      //   // initialize context data and decks
+      //   this.$.contextIronAjax.generateRequest();
+      //   this.$.decksIronAjax.generateRequest();
+      // },
+      //
+      // _computeDecks: function() {
+      //   var decks = [];
+      //   if (this._decksResponse && this._decksResponse.length > 0) {
+      //     this._decksResponse.forEach(function(deck) {
+      //       decks.push({ name: deck.title, id: deck.id });
+      //     });
+      //   };
+      //   return decks;
+      // },
+      //
+      // _computeInitialBrowserContext: function(_browserContext) {
+      //   if(typeof this._initialBrowserContext !== 'object') {
+      //     return _browserContext;
+      //   } else {
+      //     return this._initialBrowserContext;
+      //   }
+      // },
+      //
+      // // "getChildren" handler for px-context-browser
+      // // this function is passed into
+      // _getChildren: function(node) {
+      //   var that = this;
+      //   return new Promise(function(resolve, reject) {
+      //     var req = new XMLHttpRequest();
+      //     req.open('GET', '/api/predix-asset' + node.uri);
+      //
+      //     req.onload = function() {
+      //       if (req.status === 200) {
+      //         that._nodeUri = node.uri;
+      //         // that._computeDecks();
+      //         resolve(JSON.parse(req.response));
+      //       } else {
+      //         reject(req.statusText);
+      //       }
+      //     };
+      //
+      //     req.onError = function() {
+      //       reject("Network Error");
+      //     };
+      //     req.send()
+      //   });
+      // },
+      //
+      // _itemOpenHandler: function(item) {
+      //   this._selectedContextTag = item.id;
+      //   this.$.decksIronAjax.generateRequest();
+      // },
     });
   </script>
 
