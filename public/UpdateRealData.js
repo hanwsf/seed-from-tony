@@ -12,8 +12,6 @@ var connectedDeviceConfig = {"note": "Out of the box, the predix-seed app uses m
 "assetZoneId": "{The Zone ID for the Asset Service Created}"};
 
 var accessToken = '';
-var lineData=[];
-var pxdata=new Array();
 var chartId='';
 // var pxsimplechart=document.getElementById(chartId);//获取simple-line-chart 对象
 var pxsimplechart;
@@ -70,9 +68,7 @@ function updateChart (tagName) {
             var str = JSON.stringify(timeSeriesGetData.responseText, null, 2);
 						newdate = data.tags[0].results[0].values[0][0];
 						linedata = data.tags[0].results[0].values[0][1];
-							// pxdata[0]=newdate;
-							// pxdata[1]=linedata;
-							// lineData.push(pxdata);
+
 							pxsimplechart.addPoint([newdate,linedata]); //添加实时数据
 							console.log([newdate,linedata]);
           	}
