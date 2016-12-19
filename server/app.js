@@ -19,6 +19,7 @@ var config = require('./predix-config');
 // configure passport for authentication with UAA
 var passportConfig = require('./passport-config');
 
+var securepages = require('./secure-page-routes'); //个人添加
 //个人添加
 // Setting up option for UAA
 var clientId = '';
@@ -35,12 +36,12 @@ if (node_env === 'development') {
   var devConfig = require('./localConfig.json')[node_env];
 
   //个人添加
-  clientId = config.clientId;
-  uaaUri = config.uaaURL;
-  base64ClientCredential  = config.base64ClientCredential;
-  applicationUrl = config.appURL;
-  timeseriesZone = config.timeseriesZoneId;
-  timeseriesURL = config.timeseriesURL;
+  clientId = devConfig.clientId;
+  uaaUri = devConfig.uaaURL;
+  base64ClientCredential  = devConfig.base64ClientCredential;
+  applicationUrl = devConfig.appURL;
+  timeseriesZone = devConfig.timeseriesZoneId;
+  timeseriesURL = devConfig.timeseriesURL;
   //个人添加
 
 	proxy.setServiceConfig(config.buildVcapObjectFromLocalConfig(devConfig));
@@ -153,12 +154,11 @@ if (uaaIsConfigured) {
     });
 //以下注释掉，直接跳转到dashboards界面
   // //secure route checks for authentication
-  // app.get('/#/securepage/datas', passport.authenticate('main', {
-  // 	noredirect: true //Don't redirect a user to the authentication page, just show an error
-  //   }), function(req, res) {
-  //     console.log('Accessing the secure section ...'+path.join(__dirname + '/securepage-view.html'))
-  //     res.send(connectedDeviceConfig);
-  // });
+  app.use('/securepages',
+    passport.authenticate('main', {
+      noredirect: true
+    }),
+    securepages);
   // tutorial要求加上这一段
   app.get('/', passport.authenticate('main', {
     noredirect: false // redirect a user to the authentication page
@@ -195,7 +195,6 @@ app.get('/favicon.ico', function (req, res) {
 //     }
 //     res.redirect('/');
 // }
-
 
 ////// error handlers //////
 // catch 404 and forward to error handler

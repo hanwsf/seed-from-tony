@@ -3,7 +3,7 @@ Global variables
 **/
 var connectedDeviceConfig = '';
 var accessToken = '';
-var selectTag=0; //默认选定的
+var selectTag=10; //默认选定的
 
 var selectline = new TimeSeries();
 var lines = new Array();  //用来存放数据线
@@ -12,7 +12,6 @@ var lines = new Array();  //用来存放数据线
 // 	lines[i]=new TimeSeries();
 // }
 var lineData=[];
-var pxdata=new Array();
 var pxsimplechart=document.getElementById('realtimechart4'); //获取simple-line-chart 对象
 
 var tagNames = new Array();
@@ -91,9 +90,7 @@ function updateChart (num) {
             var str = JSON.stringify(timeSeriesGetData.responseText, null, 2);
 						newdate = data.tags[0].results[0].values[0][0];
 						linedata = data.tags[0].results[0].values[0][1];
-							// pxdata[0]=newdate;
-							// pxdata[1]=linedata;
-							// lineData.push(pxdata);
+
 							pxsimplechart.addPoint([newdate,linedata]); //添加实时数据
 								console.log([newdate,linedata]);
 								selectline.append(newdate, linedata);
@@ -123,18 +120,17 @@ Method to generate the list of tags to choose from
 function configureTagsTimeseriesData() {
   getConnectedDeviceConfig().then(
     function(response) {
-			// console.log(response);
-      // connectedDeviceConfig = JSON.parse(response);
-			connectedDeviceConfig={"note": "Out of the box, the predix-seed app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
-	    "clientId": "kepware",
-	    "uaaUri": "https://ad3c70da-70ba-4b79-afad-1ec3cecdbb16.predix-uaa.run.aws-usw02-pr.ice.predix.io",
-	    "base64ClientCredential": "a2Vwd2FyZTprZXB3YXJl",
-	    "appUri": "http://localhost:5000",
-	    "timeseriesURL": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
-	    "timeseriesZone": "d68e28b9-2f6d-4e95-bbdb-d07e070f8827",
-	    "assetURL": "{Asset URL from VCAPS}",
-	    "assetZoneId": "{The Zone ID for the Asset Service Created}"}
-
+			console.log(response);
+      connectedDeviceConfig = JSON.parse(response);
+			// connectedDeviceConfig={"note": "Out of the box, the predix-seed app uses mock data, so these values are not required.  Set these values for connecting to real Predix services.",
+	    // "clientId": "kepware",
+	    // "uaaUri": "https://ad3c70da-70ba-4b79-afad-1ec3cecdbb16.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+	    // "base64ClientCredential": "a2Vwd2FyZTprZXB3YXJl",
+	    // "appUri": "http://localhost:5000",
+	    // "timeseriesURL": "https://time-series-store-predix.run.aws-usw02-pr.ice.predix.io/v1/datapoints",
+	    // "timeseriesZone": "d68e28b9-2f6d-4e95-bbdb-d07e070f8827",
+	    // "assetURL": "{Asset URL from VCAPS}",
+	    // "assetZoneId": "{The Zone ID for the Asset Service Created}"}
       {
         select = document.getElementById('tagList');
         if (select) {
@@ -161,8 +157,6 @@ function configureTagsTimeseriesData() {
                 if (timeSeriesGetAllTags.status >= 200 && timeSeriesGetAllTags.status < 400) {
 									smoothie.addTimeSeries(selectline,{lineWidth:2,strokeStyle:'#00ff00'});
 									smoothie.streamTo(document.getElementById("realtimechart"));
-
-
 
                   var data = JSON.parse(timeSeriesGetAllTags.responseText);
 
@@ -212,7 +206,7 @@ Method to make the necessary rest call and get the configurations from the serve
 function getConnectedDeviceConfig() {
   return new Promise(function(resolve, reject) {
     var request = new XMLHttpRequest();
-    request.open('GET', '/#/securepage/datas');
+    request.open('GET', '/securepages/datas');
     request.onload = function() {
       if (request.status == 200) {
         resolve(request.response);
