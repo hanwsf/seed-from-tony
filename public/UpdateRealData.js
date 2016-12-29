@@ -14,7 +14,7 @@ var common_connectedDeviceConfig='';
 var accessToken = '';
 var chartId='';
 // var pxsimplechart=document.getElementById(chartId);//获取simple-line-chart 对象
-var pxsimplelinechart_test;
+var pxsimplelinechartTest;
 var tag_Name='';
 
 /**
@@ -27,7 +27,7 @@ function UpdateRealData(chartId,tagName) {
       common_connectedDeviceConfig = JSON.parse(response);
       this.chartId=chartId;
       this.tag_Name=tagName;
-      pxsimplelinechart_test=document.getElementById(chartId);
+      pxsimplelinechartTest=document.querySelector(this.chartId);
       setInterval(updateCharts,3000);
     },
     function(error) {
@@ -50,21 +50,21 @@ Method to update the Chart with the latest data from the selected tags
 This method quries UAA and Timeseries directly
 **/
 function updatecommonChart (tagName) {
-    var uaaRequest = new XMLHttpRequest();
+    var myuaaRequest = new XMLHttpRequest();
     var auth = common_connectedDeviceConfig.base64ClientCredential;
     var uaaParams = "grant_type=client_credentials&client_id=" + common_connectedDeviceConfig.clientId;
 		var line_date;
 		var line_data;
 
-    uaaRequest.open('GET', common_connectedDeviceConfig.uaaUri + "/oauth/token?" + uaaParams, true);
-    uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
+    myuaaRequest.open('GET', common_connectedDeviceConfig.uaaUri + "/oauth/token?" + uaaParams, true);
+    myuaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
-    uaaRequest.onreadystatechange = function() {
-      if (uaaRequest.readyState == 4) {
-        var res = JSON.parse(uaaRequest.responseText);
+    myuaaRequest.onreadystatechange = function() {
+      if (myuaaRequest.readyState == 4) {
+        var res = JSON.parse(myuaaRequest.responseText);
         accessToken = res.token_type + ' ' + res.access_token;
 
-        var myTimeSeriesBody = {
+        var my_TimeSeriesBody = {
           tags: []
         };
 
@@ -72,7 +72,7 @@ function updatecommonChart (tagName) {
         var datapointsUrl = common_connectedDeviceConfig.timeseriesURL;
         realtimeSeriesGetData.open('POST', datapointsUrl + "/latest", true);
 
-        myTimeSeriesBody.tags.push({
+        my_TimeSeriesBody.tags.push({
             "name" : tagName
         });
 
@@ -82,12 +82,12 @@ function updatecommonChart (tagName) {
 
         realtimeSeriesGetData.onload = function() {
           if (realtimeSeriesGetData.status >= 200 && realtimeSeriesGetData.status < 400) {
-            var data = JSON.parse(realtimeSeriesGetData.responseText);
+            var datas = JSON.parse(realtimeSeriesGetData.responseText);
             var str = JSON.stringify(realtimeSeriesGetData.responseText, null, 2);
-						line_date = data.tags[0].results[0].values[0][0];
-						line_data = data.tags[0].results[0].values[0][1];
+						line_date = datas.tags[0].results[0].values[0][0];
+						line_data = datas.tags[0].results[0].values[0][1];
 
-							pxsimplelinechart_test.addPoint([line_date,line_data]); //添加实时数据
+							pxsimplelinechartTest.addPoint([line_date,line_data]); //添加实时数据
 							console.log([line_date,line_data]);
           	}
           else {
@@ -96,13 +96,13 @@ function updatecommonChart (tagName) {
             }
           }
         };
-        realtimeSeriesGetData.send(JSON.stringify(myTimeSeriesBody));
+        realtimeSeriesGetData.send(JSON.stringify(my_TimeSeriesBody));
       }
       else {
         console.log("No access token");
       }
     };
-    uaaRequest.send();
+    myuaaRequest.send();
 }
 
 /**

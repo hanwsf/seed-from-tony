@@ -3,7 +3,7 @@ Global variables
 **/
 var connectedDeviceConfig = '';
 var accessToken = '';
-var selectTag=10; //默认选定的
+var selectTag; //默认选定的
 
 var selectline = new TimeSeries();
 var lines = new Array();  //用来存放数据线
@@ -12,7 +12,7 @@ var lines = new Array();  //用来存放数据线
 // 	lines[i]=new TimeSeries();
 // }
 var lineData=[];
-var pxsimplechart=document.getElementById('realtimechart4'); //获取simple-line-chart 对象
+var pxsimplechart=document.querySelector("#realtimechart4"); //获取simple-line-chart 对象
 
 var tagNames = new Array();
 //millisPerPixel = 900 means 15 minutes, 1800 means 30 minutes, 3600 means 1 hour
@@ -23,7 +23,7 @@ This function is called on the submit button of Get timeseries data to fetch
 data from TimeSeries.
 **/
 function onclick_machineServiceData() {
-	selectTag = getTagsSelectedValue();
+	this.selectTag = getTagsSelectedValue();
 	setInterval(updateAllCharts,3000);
 }
 
@@ -42,7 +42,7 @@ function getTagsSelectedValue() {
 }
 function updateAllCharts(){
 	//for(var i=0;i<tagNames.length;i++){
-		updateChart(selectTag);
+		updateChart(this.selectTag);
 	//}
 }
 /**
@@ -72,13 +72,14 @@ function updateChart (num) {
         var datapointsUrl = connectedDeviceConfig.timeseriesURL;
         timeSeriesGetData.open('POST', datapointsUrl + "/latest", true);
 
-        var tags = tagNames[num].split(",");
-        for (i=0; i < tags.length; i++)
-        {
+        // var tags = tagNames[num].split(",");
+        // for (i=0; i < tags.length; i++)
+        // {
           myTimeSeriesBody.tags.push({
-            "name" : tags[i]
+            // "name" : tags[i]
+						"name" : tagNames[num]
         });
-        }
+        // }
 
         timeSeriesGetData.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.timeseriesZone);
         timeSeriesGetData.setRequestHeader("Authorization", accessToken);
