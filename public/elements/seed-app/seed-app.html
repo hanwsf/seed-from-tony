@@ -176,10 +176,10 @@
       },
 
       _checkForDefaultRoute: function() {
-        // set default route to /dashboards
+        // set default route to /dashboards, if change to securepage, doesn't work
         var l = window.location;
         if((l.hash === "#/" || l.hash === "") && l.pathname === "/") {
-          l.hash = "/dashboards";
+          l.hash = "/securepage";
         }
       }
 

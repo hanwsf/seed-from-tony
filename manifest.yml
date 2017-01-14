@@ -1,18 +1,18 @@
 ---
 applications:
-  - name: tony-predix-ui-seed
+  - name: predix-seed-william
     memory: 64M
     buildpack: nodejs_buildpack
     command: node server/app.js
     path: dist
 services:
- - eagleappuaa
- - eagleopcts
+ - my-predix-uaa
+ - my-timeseries
  # - <your-name>-timeseries-instance
  # - <your-name>-asset-instance
 env:
     node_env: cloud
     uaa_service_label : predix-uaa
     # Add these values for authentication in the cloud
-    clientId: kepware
-    base64ClientCredential: a2Vwd2FyZTprZXB3YXJl
+    clientId: tutorial-svcs
+    base64ClientCredential: dHV0b3JpYWwtc3ZjczowOTA4d3Nm

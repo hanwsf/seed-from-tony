@@ -150,9 +150,9 @@ if (uaaIsConfigured) {
   	failureRedirect: '/'
   }), function(req, res) {
   	console.log('Redirecting to secure route...');
-  	res.redirect('/#/dashboards');
+  	res.redirect('/#/securepage');
     });
-//以下注释掉，直接跳转到dashboards界面
+//以下注释掉，直接跳转到securepage界面
   // //secure route checks for authentication
   app.use('/securepages',
     passport.authenticate('main', {

@@ -1,51 +1,85 @@
 
-  <link rel="stylesheet" href="style.css"></link>
-  <link rel="import" href="../../bower_components/px-simple-line-chart/px-simple-line-chart.html" />
-  <!-- <link rel="import" href="../bower_components/polymer/polymer.html"/> -->
+<link rel="stylesheet" href="style.css"></link>
+<link rel="import"
+	href="../../bower_components/px-simple-line-chart/px-simple-line-chart.html" />
+<!-- <link rel="import" href="../bower_components/polymer/polymer.html"/> -->
 
 
-  <dom-module id="securepage-view">
-    <template>
-      <script type="text/javascript" src="smoothie.js"></script>
-      <script type="text/javascript" src="Timeseries.js" onload="configureTagsTimeseriesData();"></script>
+<dom-module id="securepage-view"> <template> <script
+	type="text/javascript" src="smoothie.js"></script> <script
+	type="text/javascript" src="Timeseries.js"
+	onload="configureTagsTimeseriesData();"></script>
 
-      <div class="container" >
-          <h2>Welcome to a Secure Page.</h2>
-      	<div class="div1" style=" width:1000px; height:1000px;" >
-      	<h1>Predix Real Time Chart</h1>
-      	<div class="div2" style=" width:370px; height:400px;float:left" >
-      	  <table><tr>
-      	  <td>
-              <p> <b>Select the tags </b></p>
-      			<select multiple id="tagList" clasms='tag-multiple'>
-      			</select>
-            </td>
-      	  </tr>
-      	  <tr>
-      	  <td><button type="button" class="timeseries_button" id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
-      		<p id="errorMessage"></p>
-      		</td>
-        </tr></table>
-      	</div>
-      	<div class="chartarea" style=" width:600px; height:400px;float:right" >
+<div class="container">
+	We display the chart with timeseries.js and px-simple-chart UI
+	component, the data is from OPC UA Server.
+<!-- 	put 2 charts in a row
+ -->	<div class="div1" style="width: 1000px; height: 1000px;">
+		<h1>Predix Real Time Chart for OPCUA/Other Databus</h1>
+		<div class="div2" style="width: 300px; height: 120px; float: left">
+			<!--       	  original width is 370
+ -->
+			<table>
+				<tr>
+					<td>
+						<p>
+							<!-- <b>Select the tags </b> -->
+						</p> <select multiple id="tagList" clasms='tag-multiple'>
+					</select>
+					</td>
+					<!-- 				</tr>
+				<tr> -->
+					<td><b>Select 1 tag from left </b>
+						<button type="button" class="timeseries_button"
+							id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
+						<p id="errorMessage"></p></td>
+				</tr>
+			</table>
+
+		</div>
+
+		<div class="div3" style="width: 1000px; height: 400px; float: left">
+			<table>
+				<tr>
+<!-- 				hidden the time series, not sure why not work all of sudden
+ --><!-- 					<td>
+						<div class="chartarea"
+							style="width: 498px; height: 400px; float: right">
+							<canvas id="realtimechart" width="498" height="400""></canvas>
+						</div>
+					</td> -->
+					<td>
+						<div class="chartarea"
+							style="width: 498px; height: 400px; float: right">
+							<px-simple-line-chart id="realtimechart4" width="498"
+								height="400" columns="50" rows="10"></px-simple-line-chart>
+							<!--       	modify from columns="15", realtimechart4 setup in Timeseries.js. 
+ -->
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!--       	try to mergy these 2 chart in same table
+ -->
+		<!--       	<div class="chartarea" style=" width:600px; height:400px;float:right" >
       		<canvas id="realtimechart" width="580" height="380" "></canvas>
       	</div>
 
       	<br><br><br><br><br><br><br>
         <div class="chartarea" style=" width:600px; height:400px;float:right" >
-      		<px-simple-line-chart id="realtimechart4"  width="580" height="400" columns="15" rows="10"></px-simple-line-chart>
-      	</div>
+      		<px-simple-line-chart id="realtimechart4"  width="580" height="400" columns="50" rows="10"></px-simple-line-chart>
+      	modify from columns="15"
+      	</div> -->
 
-       </div>
-      </div>
-    </template>
-    <script>
-      Polymer({
-        is: 'securepage-view',
-        properties: {},
-        ready: function() {
-          console.log('securepage-view ready()');
-        }
-      });
-    </script>
-  </dom-module>
+	</div>
+</div>
+</template> <script>
+	Polymer({
+		is : 'securepage-view',
+		properties : {},
+		ready : function() {
+			console.log('securepage-view ready()');
+		}
+	});
+</script> </dom-module>

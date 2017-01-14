@@ -1,3 +1,13 @@
+use tony's revised project try to see whether time.js etc. embedded in the sercure page, and how the single line chart is applied in the secure page.
+
+==
+Error: Could not import `px-defaults-design/_settings.defaults.scss` from any of the following locations:
+  /predix/Tony-Predix-Seed/public/px-defaults-design/_settings.defaults.scss
+try bower install
+==
+this one can run sucessfully with timeschart.js and single line charter.
+
+
 # Predix UI Seed
 
 ### IMPORTANT NOTE

@@ -41,11 +41,11 @@
      * Dark
      */
 :root {
-  --px-app-nav-background-color: #242326;
+  --px-app-nav-background-color: #1b2a33;
   --px-app-nav-link-text-color: white;
   --px-app-nav-link-selected-color: #086e87;
   --px-app-nav-link-selected-active-color: #0986a4;
-  --px-app-nav-link-hover-color: #525156;
+  --px-app-nav-link-hover-color: #425866;
   --px-app-nav-link-active-color: #3573c5;
   --px-font-family: "GE Inspira Sans", sans-serif; }
 
@@ -64,6 +64,7 @@
  *    render text using sub-pixel anti-aliasing.
  */
 html {
+  background-color: var(--px-base-background-color, white);
   font-size: 0.9375em;
   /* [1] */
   line-height: 1.33333;
@@ -74,8 +75,7 @@ html {
   /* [3] */ }
 
 :host, html {
-  background-color: white;
-  color: black;
+  color: var(--px-base-text-color, black);
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
           text-size-adjust: 100%;
@@ -371,7 +371,7 @@ body {
 
 html, body {
   margin: 0;
-  background: #3b3b3f;
+  background: #2c404c;
   font-family: "GE Inspira Sans", sans-serif;
   font-weight: normal; }
 
