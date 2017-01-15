@@ -53,7 +53,7 @@ if(node_env === 'development') {
 	settings.base64ClientCredential = process.env.base64ClientCredential;
 	settings.clientId = process.env.clientId;
 }
-// console.log('config settings: ' + JSON.stringify(settings));
+console.log('config settings: ' + JSON.stringify(settings));
 
 // This vcap object is used by the proxy module.
 settings.buildVcapObjectFromLocalConfig = function(config) {

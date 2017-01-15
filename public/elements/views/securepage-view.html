@@ -13,26 +13,28 @@
 <div class="container">
 	We display the chart with timeseries.js and px-simple-chart UI
 	component, the data is from OPC UA Server.
-<!-- 	put 2 charts in a row
- -->	<div class="div1" style="width: 1000px; height: 1000px;">
-		<h1>Predix Real Time Chart for OPCUA/Other Databus</h1>
-		<div class="div2" style="width: 300px; height: 120px; float: left">
-			<!--       	  original width is 370
+	<!-- 	put 2 charts in a row
  -->
+	<div class="div1" style="width: 1000px; height: 1000px;">
+		<h1>Predix Real Time Chart for OPCUA/Other Databus</h1>
+		<div class="div2" style="width: 300px; height: 100px; float: left">
+
 			<table>
 				<tr>
+				<tr>
 					<td>
-						<p>
-							<!-- <b>Select the tags </b> -->
-						</p> <select multiple id="tagList" clasms='tag-multiple'>
+						<select multiple id="tagList" clasms='tag-multiple'>
 					</select>
 					</td>
-					<!-- 				</tr>
-				<tr> -->
-					<td><b>Select 1 tag from left </b>
-						<button type="button" class="timeseries_button"
-							id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
-						<p id="errorMessage"></p></td>
+					<td>
+					
+							Select the tags 
+						
+					<button type="button" class="timeseries_button"
+						id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
+					<p id="errorMessage"></p></td>
+				</tr>
+
 				</tr>
 			</table>
 
@@ -41,13 +43,14 @@
 		<div class="div3" style="width: 1000px; height: 400px; float: left">
 			<table>
 				<tr>
-<!-- 				hidden the time series, not sure why not work all of sudden
- --><!-- 					<td>
+					<!-- 				hidden the time series, not sure why not work all of sudden
+ -->
+					<td>
 						<div class="chartarea"
 							style="width: 498px; height: 400px; float: right">
 							<canvas id="realtimechart" width="498" height="400""></canvas>
 						</div>
-					</td> -->
+					</td>
 					<td>
 						<div class="chartarea"
 							style="width: 498px; height: 400px; float: right">

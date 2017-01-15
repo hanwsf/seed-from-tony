@@ -18,7 +18,7 @@ var proxy = require('./proxy'); // used when requesting data from real services.
 var config = require('./predix-config');
 // configure passport for authentication with UAA
 var passportConfig = require('./passport-config');
-
+var settings = {};
 var securepages = require('./secure-page-routes'); //个人添加
 //个人添加
 // Setting up option for UAA
@@ -46,6 +46,33 @@ if (node_env === 'development') {
 
 	proxy.setServiceConfig(config.buildVcapObjectFromLocalConfig(devConfig));
 	proxy.setUaaConfig(devConfig);
+} else {
+	// read VCAP_SERVICES
+	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
+	var uaaService = vcapsServices[process.env.uaa_service_label];
+	var assetService = vcapsServices['predix-asset'];
+	var timeseriesService = vcapsServices['predix-timeseries'];
+
+	if(uaaService) {
+    		uaaUri = uaaService[0].credentials.uri;
+		settings.tokenURL = uaaService[0].credentials.uri;
+	}
+	if(assetService) {
+		settings.assetURL = assetService[0].credentials.uri + '/' + process.env.assetMachine;
+		settings.assetZoneId = assetService[0].credentials.zone['http-header-value'];
+	}
+	if(timeseriesService) {
+		timeseriesZone = timeseriesService[0].credentials.query['zone-http-header-value'];
+		timeseriesURL = timeseriesService[0].credentials.query.uri;
+	}
+
+	// read VCAP_APPLICATION
+	var vcapsApplication = JSON.parse(process.env.VCAP_APPLICATION);
+	appUrl = 'https://' + vcapsApplication.uris[0];
+	settings.callbackURL = settings.appURL + '/callback';
+	base64ClientCredential = process.env.base64ClientCredential;
+	clientId = process.env.clientId;
+	applicationUrl = uaaUri;
 }
 
 console.log('************'+node_env+'******************');
@@ -57,7 +84,7 @@ var uaaIsConfigured = config.clientId &&
 if (uaaIsConfigured) {
 	passport = passportConfig.configurePassportStrategy(config);
 }
-
+console.log('****config from predix-config.js********'+config+'******************');
 /**********************************************************************
        SETTING UP EXRESS SERVER
 ***********************************************************************/
