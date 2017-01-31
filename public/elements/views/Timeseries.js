@@ -91,9 +91,11 @@ function updateChart (num) {
             var str = JSON.stringify(timeSeriesGetData.responseText, null, 2);
 						newdate = data.tags[0].results[0].values[0][0];
 						linedata = data.tags[0].results[0].values[0][1];
-
+						//console.log("Timeseries:data-"+data+"str-"+str);//added ###
 							pxsimplechart.addPoint([newdate,linedata]); //添加实时数据
-								console.log([newdate,linedata]);
+						//	console.log([newdate,linedata]);
+							selectline
+						//console.log("Timeseries:newdate-"+newdate+"linedata-"+linedata);//added ###
 								selectline.append(newdate, linedata);
           	}
           else {
