@@ -95,7 +95,6 @@
       },
 
       ready: function ready() {
-        console.log('dashboards-view ready()');
         var _this = this;
         this.$.contextBrowser.handlers = {
           // getChildren fires when a node is 'selected'
@@ -122,6 +121,14 @@
         return decks;
       },
 
+      _computeInitialBrowserContext: function(_browserContext) {
+        if(typeof this._initialBrowserContext !== 'object') {
+          return _browserContext;
+        } else {
+          return this._initialBrowserContext;
+        }
+      },
+
       // "getChildren" handler for px-context-browser
       // this function is passed into
       _getChildren: function(node) {
@@ -143,6 +150,7 @@
           req.onError = function() {
             reject("Network Error");
           };
+
           req.send()
         });
       },
