@@ -37,7 +37,8 @@
     "px-vis-timeseries": "^0.6.7",
     "px-vis-xy-chart": "^0.2.14",
     "px-view-header": "^0.1.1",
-    "px-simple-line-chart": "^1.5.10"
+    "px-simple-line-chart": "^1.5.10",
+    "px-rangepicker": "^1.3.6"
   },
   "devDependencies": {
     "px-forms-design": "^0.3.17",

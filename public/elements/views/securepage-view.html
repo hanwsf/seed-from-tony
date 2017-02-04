@@ -4,7 +4,8 @@
 	href="../../bower_components/px-simple-line-chart/px-simple-line-chart.html" />
 <link rel="import"
 	href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html" />	
-<!-- <link rel="import" href="../bower_components/polymer/polymer.html"/> -->
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../../bower_components/px-rangepicker/px-rangepicker.html">
 
 
 <dom-module id="securepage-view"> <template> <script
@@ -62,6 +63,13 @@
 					<td>
 						<div class="chartarea"
 							style="width: 498px; height: 400px; float: right">
+								<px-rangepicker
+						        id="rangepicker"
+						        range="{{range}}"
+						        date-format="YYYY/MM/DD"
+						        time-format="hh:mm:ss A"
+						        show-buttons="true">
+						      </px-rangepicker>
 <!-- 							<px-vis-timeseries include-all-series="true" enable-tooltip="true" prevent-resize="true" width="498" height="400" selection-type="xAxis" register-location="top" chart-data='[{"x":1397177400000,"y0":0},{"x":1397228040000,"y0":0.897},{"x":1397248260000,"y0":1},{"x":1397291280000,"y0":2},{"x":1397318100000,"y0":1.5},{"x":1397342100000,"y0":3},{"x":1397390820000,"y0":0.897}]'></px-vis-timeseries> -->
 							<px-vis-timeseries id="timeseriesvis" include-all-series="true" enable-tooltip="true" prevent-resize="true" width="498" height="400" selection-type="xAxis" register-location="top" ></px-vis-timeseries>
 							</div>
@@ -91,13 +99,26 @@
 
 		  ready: function(){
 			  console.log('securepage-view ready()');
-// 		    var rangepicker = this.$.rangepicker,
-// 		        btnSnap = this.$.btnSnap,
-// 		        timeSerie = this.$.timeSerie;
+			    var rangepicker = this.$.rangepicker,
+		        btnSnap = this.$.btnSnap,
+		        timeseriesvis = this.$.timeseriesvis;
+		        
+			    rangepicker.range = {
+				        "from":"2017-01-30T04:01:00.000Z",
+				        "to":"2017-01-31T20:42:00.000Z"
+				  };
 
-
-
+		    timeseriesvis.range = rangepicker.range;
+		    // added for range change and click the apply button, vis-timeseries data retrieved accordingly.
+		      document.addEventListener('px-datetime-range-submitted', function(evt) {
+		    	  timeseriesvis.range = rangepicker.range;
+		    	  console.log(rangepicker.range.from);
+// 		      counter++;
+// 		      for(var i=1; i<=optionsArray.length; i++) {
+// 		        var span = document.getElementById('counter'+i);
+// 		        span.innerHTML = '<strong>px-datetime-range-submitted</strong> fired <strong>' + counter + '</strong> time(s)';
+// 		      }
+		    });
 		  },
-
 		});
 </script> </dom-module>

@@ -27,7 +27,18 @@ var smoothie = new SmoothieChart({millisPerPixel:900,labels:{fillStyle:'#00ff00'
 //}
 //get data to px-vis chart with 25 data points
 
-
+// added for convert the from and to in vis-timeseires range
+function get_unix_time_stamp(strtime=false){
+    if(strtime){
+        var date = new Date(strtime);
+    }else{
+        var date = new Date();
+    }
+    time1 = date.getTime();   //会精确到毫秒---长度为13位
+    //time2 = date.valueOf(); //会精确到毫秒---长度为13位
+    //time3 = Date.parse(date); //只能精确到秒，毫秒将用0来代替---长度为10位
+    return time1;
+}
 
 /**
 This function is called on the submit button of Get timeseries data to fetch
@@ -111,10 +122,13 @@ function updateChart (num) {
           if (timeSeriesGetData.status >= 200 && timeSeriesGetData.status < 400) {
             var data = JSON.parse(timeSeriesGetData.responseText);
             var str = JSON.stringify(timeSeriesGetData.responseText, null, 2);
+            // add this if to avoid affect other functions.
+                if (data.tags[0].results[0].values.length != 0){
 						newdate = data.tags[0].results[0].values[0][0];
 						linedata = data.tags[0].results[0].values[0][1];
 							pxsimplechart.addPoint([newdate,linedata]); //添加实时数据
 							selectline.append(newdate, linedata);
+                }
 
           	}
           else {
@@ -157,9 +171,12 @@ function updateVisChart (num) {
         var vismyTimeSeriesBody = {
         			cache_time:0,
                tags: [],
-               start:1485433203000,
-               end:1485865203000
+               //start:1483885436959,
+               //end:1485433203000
+               start:1485760803000, //try to convert the from and to in range attribute
+               end:1485760803000
               };
+
 
         // add for vis-chart
         var vistimeSeriesGetData = new XMLHttpRequest();
@@ -174,6 +191,9 @@ function updateVisChart (num) {
 				"name" : tagNames[num]
           
 });
+          //add for vis-chart
+          vismyTimeSeriesBody.start = get_unix_time_stamp(timeseriesvis.range.from);
+          vismyTimeSeriesBody.end = get_unix_time_stamp(timeseriesvis.range.to);
         // add for vis-chart
         vistimeSeriesGetData.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.timeseriesZone);
         vistimeSeriesGetData.setRequestHeader("Authorization", accessToken);
