@@ -4,22 +4,25 @@
 	href="../../bower_components/px-simple-line-chart/px-simple-line-chart.html" />
 <link rel="import"
 	href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html" />	
-<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../../bower_components/polymer/polymer.html"/>
 <link rel="import" href="../../bower_components/px-rangepicker/px-rangepicker.html">
 
 
-<dom-module id="securepage-view"> <template> <script
-	type="text/javascript" src="smoothie.js"></script> <script
-	type="text/javascript" src="Timeseries.js"
-	onload="configureTagsTimeseriesData();"></script>
+<dom-module id="securepage-view"> 
+<template> 
+<script type="text/javascript" src="smoothie.js">
+</script> 
+<script>
+setTimeout(2000);
+</script> 
+<script type="text/javascript" src="Timeseries.js" onload="configureTagsTimeseriesData();"></script>
 
 <div class="container">
-	We display the chart with timeseries.js and px-simple-chart UI
-	component, the data is from OPC UA Server.
+	Display realtime chart on the left and historic data chart on right.
 	<!-- 	put 2 charts in a row
  -->
 	<div class="div1" style="width: 1000px; height: 1000px;">
-		<h1>Predix Real Time Chart for OPCUA/Other Databus</h1>
+		<h1>Predix Real Time Chart for OPCUA/Modbus</h1>
 		<div class="div2" style="width: 300px; height: 100px; float: left">
 
 			<table>
