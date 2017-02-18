@@ -1,10 +1,12 @@
 /**
 Global variables
 **/
+//var smoothie = require('smoothie');
+
 var connectedDeviceConfig = '';
 var accessToken = '';
 var selectTag; //默认选定的
-
+document.scripts[0].src=" ./smoothie.js";
 var selectline = new TimeSeries();
 
 // add for vis-chart
@@ -18,6 +20,7 @@ var pxtimeseriesvis=document.querySelector("#timeseriesvis");
 var tagNames = new Array();
 //millisPerPixel = 900 means 15 minutes, 1800 means 30 minutes, 3600 means 1 hour
 var smoothie = new SmoothieChart({millisPerPixel:900,labels:{fillStyle:'#00ff00'},timestampFormatter:SmoothieChart.timeFormatter});
+
 
 // added for asset date to hartData, not used so far
 //function  AssembleDateAndData(x,y) //声明对象

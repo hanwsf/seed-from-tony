@@ -1,5 +1,6 @@
 var express = require('express');
 // var auth = require('./auth.js');
+// var smoothie = require('../public/elements/views/smoothie.js')
 var path = require('path');
 var router = express.Router();
 var app = express();
@@ -22,7 +23,7 @@ router.get('/', function(req, res, next) {
 
 /* GET Secure resource for data */
 router.get('/datas', function(req, res, next) {
-  console.log('test for getting connectedDeviceConfig')
+  console.log('secure-page-routes: test for getting connectedDeviceConfig')
   res.json(req.app.get('connectedDeviceConfig'));
 });
 
