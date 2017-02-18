@@ -4,8 +4,8 @@ Global variables
 var connectedDeviceConfig = '';
 var accessToken = '';
 var selectTag; //默认选定的
-
-var selectline = new TimeSeries();
+//can disable this one, no use
+//var selectline = new TimeSeries();
 
 // add for vis-chart
 var visArray = new Array(); // to store the object from timeseries
@@ -127,7 +127,7 @@ function updateChart (num) {
 						newdate = data.tags[0].results[0].values[0][0];
 						linedata = data.tags[0].results[0].values[0][1];
 							pxsimplechart.addPoint([newdate,linedata]); //添加实时数据
-							selectline.append(newdate, linedata);
+							//selectline.append(newdate, linedata);
                 }
 
           	}
@@ -267,8 +267,9 @@ function configureTagsTimeseriesData() {
 
               timeSeriesGetAllTags.onreadystatechange = function() {
                 if (timeSeriesGetAllTags.status >= 200 && timeSeriesGetAllTags.status < 400) {
-									smoothie.addTimeSeries(selectline,{lineWidth:2,strokeStyle:'#00ff00'});
-									smoothie.streamTo(document.getElementById("realtimechart"));
+                	//these 2 is for smoothie chart
+									//smoothie.addTimeSeries(selectline,{lineWidth:2,strokeStyle:'#00ff00'});
+									//smoothie.streamTo(document.getElementById("realtimechart"));
 
                   var data = JSON.parse(timeSeriesGetAllTags.responseText);
 
