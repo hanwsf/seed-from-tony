@@ -211,7 +211,7 @@ function updateVisChart (num) {
             		         	};
             	} 
             	pxtimeseriesvis.chartData = visArray;
-            	
+            	timeSeriesDataId.chartData = visArray;
             }	
 
             else {

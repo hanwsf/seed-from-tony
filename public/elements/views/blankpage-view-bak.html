@@ -1,0 +1,462 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import"
+	href="../../bower_components/px-sample-cards/blank-card.html">
+<link rel="import"
+	href="../../bower_components/px-view-header/px-view-header.html">
+<link rel="import" href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html">
+<dom-module id="blankpage-view"> <template> 
+<div class="container11">
+
+Add the timeseries
+
+ 	<px-vis-timeseries id="timeSeriesDataId" include-all-series="true" 
+ 		enable-tooltip="true" 
+ 		prevent-resize="true" 
+ 		width="680" height="180" 
+ 		selection-type="yAxis" 
+ 		register-location="none">
+ 	</px-vis-timeseries>
+ 	
+<!--  	<px-vis-timeseries id="timeseriesvis" include-all-series="true"  -->
+<!--  	enable-tooltip="true"  -->
+<!--  	prevent-resize="true" width="600" height="380"  -->
+<!--  	selection-type="xAxis"  -->
+<!--  	register-location="top" ></px-vis-timeseries> -->
+							
+							
+ </div> 
+
+</template> 
+<script>
+var todayDate = '';//todatDate.getDate();
+var todayFlag = false;
+var todayStartDate = "";
+var calCount = 0, IrradianceVal = 0;
+var filterType="day";
+var energyArray=[];
+var selectedMarker = "";
+Polymer({
+    is: 'blankpage-view',	
+	
+	 properties:{
+	  loadValue10: {
+		type: Number,
+		value : [0]
+	},
+	 loadValue20: {
+		type: Number,
+		value : [0]
+	},
+/*  name: {type: Number},
+graphValue: {type: Number},
+categorieValues:{type:Array},`
+dataValues:{type:Array} */
+},
+changeLocation : function(e){
+//alert(e.target.getAttribute('id'));
+//alert()
+$("#"+selectedMarker).attr("icon","marker.png");
+selectedMarker = e.target.getAttribute('id');
+//$("#info"+selectedMarker).css("display","none");
+$("#"+selectedMarker).attr("icon","marker-selected.png");
+//$("#info"+selectedMarker).show();
+//alert($("#info"+selectedMarker).text());
+},
+/* listeners: {
+'testVal.google-map-marker-click':'changeMarker'
+}, */
+ready : function(){
+
+
+//alert(days[date.getDay()]);
+//var arr = 
+//	[1876.8025,5431.5137,10087.698,15428.685,20844.373,26349.088,31166.508,36319.25,39776.035,44442.02,47062.855,51788.254,54679.55,56645.965,60543.992,62789.824,63823.082,66486.65,68878.76,69880.72,73201.914,72778.73,74527.81,76155.336,77767.266,78551.65,80293.69,80642.68,82127.57,84277.086,84696.8,84042.9,85692.47,85863.086,87370.61,86899.32,88890.35,89176.305,90900.47,90405.13,89828.766,90633.664,91035.84,91184.55,93395.234,92614.54,93435.05,93643.77,93770.38,94758.89,96178.96,94008.22,94313.234,95571.13,96873.3,96442.734,97697.83,98673.35,96257.17,97573.42,96820.48,97635.86,97069.49,99656.45,97935.15,100125.8,99891.88,99524.73,100710.69,99784.73,98092.79,99904.234,99669.24,99282.33,99935.61,100715.97,100278.62,98376.695,100387.93,99136.88,101989.945,99073.914,100426.69,100555.04,100411.445,100232.72,99259.27,100764.85,101335.8,100737.375,101223.43,101490.35,99803.66,99969.78,100739.945,101907.43,100786.48,102284.1,100941.73,100559.875,100130.25,98726.805,99528.664,101762.79,101291.41,98927.88,102050.17,101697.15,100107.38,101717.49,102041.22,100735.38,101114.69,101084.17,101906.99,98905.69,100230.65,99100.734,100298.445,100729.74,98517.83,100638.45,99301.484,100421.99,99359.305,98490.56,100241.07,101026.16,98902.69,100503.43,99061.4,98925.5,97950.125,99736.625,100614.72,98724.53,99523.07,100276.41,99016.62,98490.11,99610.44,98625.62,96969.39,96588.51,96700.79,98074.96,97269.484,96725.945,96043.38,96323.31,96230.02,95681.33,96859.49,97062.48,94941.1,94252.05,94149.68,93496.4];
+//	console.log(arr.length);
+//	var val = 0;
+//	for(var i=0;i<=arr.length-1;i++){
+//		val = val+arr[i];
+//	}
+// 	console.log(val);
+},
+handleGoogleMapData : function(data){
+//alert(data);
+//alert($("#TMTC-IT1").attr("icon"));
+//$("#TMTC-IT1").attr("icon","marker-selected.png");
+/*  console.log(data.detail.response.data);
+var length = data.detail.response.data.length;
+var item = data.detail.response.data;  */
+//alert($("#googleMap").attr("style"));
+/*  for(var i=0;i<=length-1;i++){
+$("#googleMap").append("<google-map-marker  latitude="+item[i].location.latitude+" longitude="+item[i].location.longitude+"  title="+item[i].name+" icon= 'marker.png' id="+item[i].name+">"+item[i].name+"</google-map-marker>");
+} */
+// $("#googleMap").attr("fit-to-markers","true");
+this.async(function() {
+	 console.log("Async Called");
+$("#TMTC-IT1").attr("icon","marker-selected.png");
+selectedMarker = "TMTC-IT1";
+ }, 2000);
+//$("#TMTC-IT1").attr("icon","marker-selected.png");
+},
+listeners : {
+'dayTab.tap':'getDayReport',
+'weekTab.tap':'getWeeklyReport',
+'monthTab.tap':'getMonthlyReport'
+},
+getDayReport : function(){
+$("#dayTab").css("background","#27ae60");
+$("#weekTab").css("background","#82E0AA");
+$("#monthTab").css("background","#82E0AA");
+
+filterType="day"; 
+
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getDatabyFilter?filterType=day&tagName=AC_Total_S_CB";
+$("#yieldDataAjax").attr("url",url);
+
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getIrradienceData?filterType=day&tagName=Irradiance";
+$("#irradianceDataAjax").attr("url",url);
+
+//this.$.yieldDataAjax.generateRequest();
+
+// var map = document.querySelector('google-map');
+//  map.styles = [{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"on"},{"lightness":33}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2e5d4"}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#c5dac6"}]},{"featureType":"poi.park","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":20}]},{"featureType":"road","elementType":"all","stylers":[{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#c5c6c6"}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#e4d7c6"}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#fbfaf7"}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"on"},{"color":"#acbcc9"}]}]; 
+//  console.log(map)
+
+},
+getWeeklyReport : function(){
+$("#dayTab").css("background","#82E0AA");
+$("#weekTab").css("background","#27ae60");
+$("#monthTab").css("background","#82E0AA");
+
+filterType="week";
+
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getDatabyFilter?filterType=week&tagName=AC_Total_S_CB";
+$("#yieldDataAjax").attr("url",url);
+//this.$.yieldDataAjax.generateRequest();
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getIrradienceData?filterType=week&tagName=Irradiance";
+$("#irradianceDataAjax").attr("url",url);
+},
+getMonthlyReport : function(){
+$("#dayTab").css("background","#82E0AA");
+$("#weekTab").css("background","#82E0AA");
+$("#monthTab").css("background","#27ae60");
+
+filterType="month";
+
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getDatabyFilter?filterType=month&tagName=AC_Total_S_CB";
+$("#yieldDataAjax").attr("url",url);
+
+var url = "https://solar-test-timeseries-service.run.aws-usw02-pr.ice.predix.io/services/windservices/getIrradienceData?filterType=month&tagName=Irradiance";
+$("#irradianceDataAjax").attr("url",url);
+//this.$.yieldDataAjax.generateRequest();
+},
+callServiceByInterval : function(data){
+this.async(function() {
+console.log("Async Called");
+this.$.circuitDataT.generateRequest();
+}, 10000);	
+var value = data.detail.response[0].value/1000;
+var value1 = data.detail.response[7].value/1000;
+var value2 = data.detail.response[5].value/1000;
+var value3 = data.detail.response[8].value;
+//var energy = data.detail.response[4].value/1000;
+$("#dashPowerC1").text(Math.round(value * 100) / 100);
+$("#dashACP").text(Math.round(value1 * 100) / 100);
+$("#dashRPID").text(Math.round(value2 * 100) / 100);
+
+$("#gaugeId").attr("data",'[["Label", "Value"],["Power", '+Math.round(value * 100) / 100+']]');
+/* if(filterType == "day"){
+$("#gaugeId").attr("options",'{"width": 100,"height": 100,"redFrom": 90,"redTo": 100,"yellowFrom":75,"yellowTo": 90,"minorTicks": 5,"min":1,"max" : 1200}');
+}
+if(filterType == "week"){
+$("#gaugeId").attr("options",'{"width": 100,"height": 100,"redFrom": 90,"redTo": 100,"yellowFrom":75,"yellowTo": 90,"minorTicks": 5,"min":1,"max" : 8000}');
+}
+if(filterType == "month"){
+$("#gaugeId").attr("options",'{"width": 100,"height": 100,"redFrom": 90,"redTo": 100,"yellowFrom":75,"yellowTo": 90,"minorTicks": 5,"min":1,"max" : 25000}');
+} */
+
+IrradianceVal = value3;
+//$("#dashIrrData").text(Math.round(value3 * 100) / 100).append("<sub>w/m<sup>2</sup></sub>");
+
+},
+getRandomValue : function(){
+var x = (Math.random() * 10.32) + 1;
+x = Math.round(x*100)/100;
+//var xArr = x.toString().split(".");
+//console.log(xArr);
+return x;
+},
+setValuesToYieldData : function(data){
+//console.log("IT1-Energy : " + data.detail.response.AC_Total_S_CB + " Kwh");
+console.log(new Date()+"      "+data.detail.response.AC_Total_S_CB);
+
+var YieldIT1 = Math.round(data.detail.response.AC_Total_S_CB*100)/100;
+var YieldIT2 = Math.round((data.detail.response.AC_Total_S_CB*0.97)*100)/100;
+var YieldIT3 = Math.round((data.detail.response.AC_Total_S_CB*1.01)*100)/100;
+var YieldIT4 = Math.round((data.detail.response.AC_Total_S_CB*1.02)*100)/100;
+
+$("#YieldIT1").text(YieldIT1).append(" <span style='font-size:13px;'>KWh</span>");
+$("#YieldIT2").text(YieldIT2).append(" <span style='font-size:13px;'>KWh</span>");
+$("#YieldIT3").text(YieldIT3).append(" <span style='font-size:13px;'>KWh</span>");
+$("#YieldIT4").text(YieldIT4).append(" <span style='font-size:13px;'>KWh</span>");
+
+$("#irrEnergy1").text(YieldIT1 +" KWh");
+$("#irrEnergy2").text(YieldIT2 +" KWh");
+$("#irrEnergy3").text(YieldIT3 +" KWh");
+$("#irrEnergy4").text(YieldIT4 +" KWh");
+
+$("#div1").attr("title","\nBuilding Name : TMTC-IT1 \n Energy : "+YieldIT1 +" KWh"+"  \n Irradiance : "+$("#irradienceData1").text()+" w/m2  \n Grid : + 0 KWh");
+$("#div2").attr("title","Farm Name : TMTC-IT1 \n Energy : "+YieldIT2 +" KWh"+"  \n Irradiance : "+$("#irradienceData2").text()+" w/m2  \n Grid : + 0 KWh");
+$("#div3").attr("title","Building Name : TMTC-IT1 \n Energy : "+YieldIT3 +" KWh"+"  \n Irradiance : "+$("#irradienceData3").text()+" w/m2  \n Grid : + 0 KWh");
+$("#div4").attr("title","Building Name : TMTC-IT1 \n Energy : "+YieldIT4 +" KWh"+"  \n Irradiance : "+$("#irradienceData4").text()+" w/m2  \n Grid : + 0 KWh\n");
+//[["Bar", "Energy", { "role": "style" } ], ["IT1", 136.5, "color: rgb(102, 200, 149)"], ["IT2", 120.6, "color: rgb(42, 187, 155)"], ["CB1", 146, "color: rgb(25, 202, 131)"], ["CB2", 112.5,"color: rgb(4, 147, 114)"]]
+
+$("#tempData").text(YieldIT1).append("<span style='font-size:13px;'>KWh</span>");
+var mainArr=[], subArr=[];
+subArr = ["Bar",
+      "Energy(KWh)",
+      {"role":"style"}
+      ]
+mainArr.push(subArr);
+
+for(var i=0;i<=4;i++){
+subArr=[];
+if(i==1){
+	subArr=["IT1",YieldIT1,"color: rgb(102, 200, 149)"];
+	mainArr.push(subArr);
+}
+if(i==2){
+	subArr=["IT2",YieldIT2,"color: rgb(42, 187, 155)"];
+	mainArr.push(subArr);
+}
+if(i==3){
+	subArr=["CB1",YieldIT3,"color: rgb(25, 202, 131)"];
+	mainArr.push(subArr);
+}
+if(i==4){
+	subArr=["CB2",YieldIT4,"color: rgb(4, 147, 114)"];
+	mainArr.push(subArr);
+}
+}
+
+console.log("DATA : " + JSON.stringify(mainArr));
+$("#barchartG").attr("data",JSON.stringify(mainArr));
+
+$("#mapPowerValId").text(YieldIT1).append("<sub>K&nbsp;Wh</sub>");
+
+var amt = YieldIT1*12;
+//alert(amt);
+$("#revenueId").text(Math.round(amt * 100) / 100).prepend("&#x20B9;");
+$("#progressID").attr("value",Math.round(amt * 100) / 100);
+
+var co2 = (YieldIT1*445)/1000;
+var trees = co2*0.32251;
+//for co2 and trees
+$("#windData").text(Math.round(co2 * 100) / 100).append("<sub>Kg</sub>");
+$("#humidityData").text(Math.round(trees));
+
+if(filterType == "day"){
+if(YieldIT1 !=0)
+	if(energyArray.indexOf(YieldIT1) < 0)
+		energyArray.push(YieldIT1);
+
+}
+
+localStorage.energyVal  = energyArray;
+var myProp = localStorage.getItem("energyVal");
+//alert(myProp);
+
+
+//$(".sparkline").find("canvas").attr("style","display: block; width: 153px; height: 20px; vertical-align: top;")
+/*  $(".sparkline").each(function () {
+  var $this = $(this);
+  $this.sparkline(myvalues);
+}); */
+// $('.linecustom').sparkline(myvalues);
+// $('.sparkline-1').sparkline();
+/*  $('#linecustom').sparkline(myvalues,'html',
+{
+height: '2.5em', width: '8em', lineColor: '#666', fillColor: '#666',
+minSpotColor: false, maxSpotColor: false, spotColor: '#666', spotRadius: 3
+});
+*/
+// $("#linecustom").find("canvas").attr("style","display: block; width: 153px; height: 30px; vertical-align: top;")
+
+this.async(function() {
+this.$.yieldDataAjax.generateRequest();
+}, 10000);
+},
+setValuesToIrradiance : function(data){
+var irradienceData1 = Math.round(data.detail.response.Irradiance*100)/100;
+var irradienceData2 = Math.round((data.detail.response.Irradiance*0.98)*100)/100;
+var irradienceData3 = Math.round((data.detail.response.Irradiance*1.01)*100)/100;
+var irradienceData4 = Math.round((data.detail.response.Irradiance*1.02)*100)/100;
+$("#irradienceData1").text(irradienceData1).append(" W/m<sup>2</sup>");
+$("#irradienceData2").text(irradienceData2).append(" W/m<sup>2</sup>");
+$("#irradienceData3").text(irradienceData3).append(" W/m<sup>2</sup>");
+$("#irradienceData4").text(irradienceData4).append(" W/m<sup>2</sup>");
+
+this.async(function() {
+this.$.irradianceDataAjax.generateRequest();
+}, 10000);
+},
+_updateDataNew: function() {
+this.async(function() {
+this.$.ajaxOne.generateRequest();
+}, 30000);
+},
+
+loadData : function(data){
+  calCount = calCount+1;
+	/* console.log(data.detail.response.wind.speed); */
+	var value = data.detail.response.data.main.temp-273;
+	var clouds = data.detail.response.data.clouds.all;
+	
+	if(calCount == 1){
+		if(clouds > 0){
+			$("#wetherInfoImg").attr("src","clouds.png").attr("style","height:33px");
+		}else{
+			$("#wetherInfoImg").attr("src","temp.png").attr("style","height:25px");
+		}
+		$("#titleID").text("Temperature");
+		$("#dashIrrData").text(data.detail.response.data.wind.speed).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>m/s</span></sub>");
+	}else if(calCount == 2){
+			$("#wetherInfoImg").attr("src","wind.png").attr("style","height:35px;margin-top: -7px;");
+			$("#titleID").text("Wind");
+			$("#dashIrrData").text(data.detail.response.data.wind.speed).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>m/s</span></sub>");
+	}else if(calCount == 3){
+				$("#wetherInfoImg").attr("src","humidity.png").attr("style","height:35px;margin-top: -7px;");
+				$("#titleID").text("Humidity");
+				$("#dashIrrData").text(data.detail.response.data.main.humidity).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>%</span></sub>");
+	}else if(calCount == 4){
+			$("#wetherInfoImg").attr("src","irradience.png").attr("style","height:38px;");
+			$("#titleID").text("Irradiance");
+			$("#dashIrrData").text(Math.round(IrradianceVal * 100) / 100).append("<sub>w/m<sup>2</sup></sub>");
+	}else{
+		if(clouds > 0){
+			$("#wetherInfoImg").attr("src","clouds.png").attr("style","height:33px");
+		}else{
+			$("#wetherInfoImg").attr("src","temp.png").attr("style","height:25px");
+		}
+		$("#titleID").text("Temperature");
+		$("#dashIrrData").text(data.detail.response.data.wind.speed).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>m/s</span></sub>");
+	}
+	
+	/* $("#tempData").text(Math.round(value, 2)).append("<sup>o</sup>C");
+	$("#windData").text(data.detail.response.data.wind.speed).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>m/s</span></sub>");
+	$("#humidityData").text(data.detail.response.data.main.humidity).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>%</span></sub>");
+	//$("#rainfallData").text(data.detail.response.data.clouds.all).append("<sub><span style='vertical-align: 6px;font-size: 18px;'>%</span></sub>");
+	var clouds = data.detail.response.data.clouds.all;
+	if(clouds > 0){
+		$("#tempDataIconID").attr("src","clouds.png").attr("style","height:33px");
+	}else{
+		$("#tempDataIconID").attr("src","temp.png").attr("style","height:25px");
+	}
+	 */
+	//$("#dashIrrData").text(Math.round(value3 * 100) / 100).append("<sub>w/m<sup>2</sup></sub>");
+	var date = new Date();
+	var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	$("#dayId").text(days[date.getDay()]);
+	
+	//$("#tempData").text(date.getDate() +" " + months[date.getMonth()] +" " + date.getFullYear());
+	
+	$("#dateIdD").text(days[date.getDay()] +", " + date.getDate() +" " + months[date.getMonth()] +" " + date.getFullYear())
+	
+	if(calCount == 4){
+		calCount = 0;
+	}
+	this.async(function() {
+		 console.log("Wether API Calling..");
+       this.$.ajax1.generateRequest();
+     }, 15000);
+	
+},		
+  _onResponseNew: function(data) {
+dataValues = data.detail.response.values;
+categorieValues = data.detail.response.categories;
+this._updateDataNew();
+/* if(this.loadValue20 == 0)
+this._trailgraphNew(); */
+}	
+	,
+	  _updateLatestDataNew: function() {
+            this.async(function() {
+              this.$.ajaxLatestData.generateRequest();
+            }, 100000);
+          },
+	_onResponseLatestData : function(data){
+		var d = new Date();
+  		var startDate = null, endDate = null;
+  		var categories = data.detail.response.categories;
+		var values = data.detail.response.values;
+		
+		//values = data.detail.response.valuesMap.AC_Total_S_CB;
+		//var irrData = data.detail.response.valuesMap.Irradiance;
+		//alert(irrData);
+		var TEnergy = 0;
+		var arr=[],obj={};
+		
+		var value=0,count=0;
+		for(var t=0;t<=values.length-1;t++){
+			value = value+(values[t]/1000);
+			var dateInFor = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ categories[t]);
+			obj = {
+					"x" : dateInFor.getTime(),
+					"Power(KW)" : values[t]/1000
+					//"Irradience" : irrData[t]/20
+			}
+			arr.push(obj);
+			TEnergy = TEnergy+(values[t]/1000);
+			
+			if(startDate == null){
+				if(values[t] != 0){
+					startDate = categories[t];
+				}
+			}
+			if(startDate !=null){
+				if(values[t] == 0){
+					endDate = categories[t];
+				}
+			}
+		}
+		console.log("Value : "+ value +" Count : " + values.length);
+		if(endDate == null){
+			endDate = categories[values.length-1];
+		}
+		var timeStart = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ startDate).getHours();
+		var timeEnd = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ endDate).getHours();
+		var hourDiff = timeEnd - timeStart;      
+		console.log("Total Energy : "+TEnergy +" in Whats");
+		
+		var vals = (TEnergy.toFixed(2));
+		var roundVal = Math.round(vals * 100) / 100
+		//$("#dashBEnergy").text(roundVal);
+		var currency = roundVal/hourDiff;
+		/* console.log(currency);
+		$("#mapPowerValId").text(Math.round(currency * 100) / 100).append("<sub>K&nbsp;Wh</sub>");
+		var amt = currency*12;
+		//alert(amt);
+		$("#revenueId").text(Math.round(amt * 100) / 100).append("<sub>&#x20B9;</sub>") */
+		
+		//$("#registerWrap").remove();
+		// data for graph
+		//console.log("<<<<<<<<<<<<"+JSON.stringify(arr)+">>>>>>>>>>>>>>");
+		$("#timeSeriesDataId").attr("chart-data",JSON.stringify(arr));
+		 this.async(function() {
+      		 console.log("Graph Service Calling..");
+               this.$.ajaxLatestData.generateRequest();
+             }, 10000);
+	//if(this.loadValue10 == 0)
+  		//this._trailgraph(categories,values);
+  	},	
+
+	
+
+});
+			  
+// 			function test(){
+// 				alert("Hi");
+// 			}		
+	        </script>
+	 </dom-module>
+

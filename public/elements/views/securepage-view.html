@@ -3,9 +3,20 @@
 <link rel="import"
 	href="../../bower_components/px-simple-line-chart/px-simple-line-chart.html" />
 <link rel="import"
-	href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html" />	
-<link rel="import" href="../bower_components/polymer/polymer.html"/>
-<link rel="import" href="../../bower_components/px-rangepicker/px-rangepicker.html">
+	href="../../bower_components/px-vis-timeseries/px-vis-timeseries.html" />
+<link rel="import" href="../../bower_components/polymer/polymer.html" />
+<link rel="import"
+	href="../../bower_components/px-rangepicker/px-rangepicker.html">
+
+<link rel="import"
+	href="../../bower_components/iron-ajax/iron-ajax.html">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="import"
+	href="../../bower_components/paper-progress/paper-progress.html">
+<!-- <link rel="import" href="../../bower_components/px-sample-cards/blank-card.html"> -->
 
 
 <dom-module id="securepage-view"> <template> <script
@@ -25,17 +36,14 @@
 			<table>
 				<tr>
 				<tr>
-					<td>
-						<select multiple id="tagList" clasms='tag-multiple'>
-					</select>
+					<td><select multiple id="tagList">
+					</select></td>
+					<td>Select the tags
+
+						<button type="button" class="timeseries_button"
+							id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
+						<p id="errorMessage"></p>
 					</td>
-					<td>
-					
-							Select the tags 
-						
-					<button type="button" class="timeseries_button"
-						id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
-					<p id="errorMessage"></p></td>
 				</tr>
 
 				</tr>
@@ -43,16 +51,16 @@
 
 		</div>
 
-		<div class="div3" style="width: 1000px; height: 400px; float: left">
+		<div class="div3" style="width: 1000px; height: 800px; float: left">
 			<table>
 				<tr>
-					
-<!-- 					<td> -->
-<!-- 						<div class="chartarea" -->
-<!-- 							style="width: 498px; height: 400px; float: right"> -->
-<!-- 							<canvas id="realtimechart" width="498" height="400""></canvas> -->
-<!-- 						</div> -->
-<!-- 					</td> -->
+
+					<!-- 					<td> -->
+					<!-- 						<div class="chartarea" -->
+					<!-- 							style="width: 498px; height: 400px; float: right"> -->
+					<!-- 							<canvas id="realtimechart" width="498" height="400""></canvas> -->
+					<!-- 						</div> -->
+					<!-- 					</td> -->
 					<td>
 						<div class="chartarea"
 							style="width: 600px; height: 400px; float: right">
@@ -63,17 +71,33 @@
 					<td>
 						<div class="chartarea"
 							style="width: 600px; height: 400px; float: right">
-								<px-rangepicker
-						        id="rangepicker"
-						        range="{{range}}"
-						        date-format="YYYY/MM/DD"
-						        time-format="hh:mm:ss A"
-						        show-buttons="true">
-						      </px-rangepicker>
-<!-- 							<px-vis-timeseries include-all-series="true" enable-tooltip="true" prevent-resize="true" width="498" height="400" selection-type="xAxis" register-location="top" chart-data='[{"x":1397177400000,"y0":0},{"x":1397228040000,"y0":0.897},{"x":1397248260000,"y0":1},{"x":1397291280000,"y0":2},{"x":1397318100000,"y0":1.5},{"x":1397342100000,"y0":3},{"x":1397390820000,"y0":0.897}]'></px-vis-timeseries> -->
-							<px-vis-timeseries id="timeseriesvis" include-all-series="true" enable-tooltip="true" prevent-resize="true" width="600" height="380" selection-type="xAxis" register-location="top" ></px-vis-timeseries>
-							</div>
+							<px-rangepicker id="rangepicker" range="{{range}}"
+								date-format="YYYY/MM/DD" time-format="hh:mm:ss A"
+								show-buttons="true"> </px-rangepicker>
+							<!-- 							<px-vis-timeseries include-all-series="true" enable-tooltip="true" prevent-resize="true" width="498" height="400" selection-type="xAxis" register-location="top" chart-data='[{"x":1397177400000,"y0":0},{"x":1397228040000,"y0":0.897},{"x":1397248260000,"y0":1},{"x":1397291280000,"y0":2},{"x":1397318100000,"y0":1.5},{"x":1397342100000,"y0":3},{"x":1397390820000,"y0":0.897}]'></px-vis-timeseries> -->
+							<px-vis-timeseries id="timeseriesvis" include-all-series="true"
+								enable-tooltip="true" prevent-resize="true" width="600"
+								height="280" selection-type="xAxis" register-location="none"></px-vis-timeseries>
+						</div>
 					</td>
+				</tr>
+				<tr>
+					<td><paper-material elevation="1" style="padding:10px">
+						<!-- So far can't get data from timer-series-store directly --> <!-- 		<iron-ajax id="ajaxLatestData" -->
+						<!-- 			auto --> <!-- 			url="https://time-series-store-predix.run.aws-jp01-pr.ice.predix.io/v1/datapoints" -->
+						<!-- 			method="POST" --> <!-- 			params='{"predix-zone-id":"cbe8918f-3052-4454-9ed0-4ced7d932b68","authorization":"Bearer Please log in first.","cache_time":0,"tags":[{"name":"CompressionRatio","order":"desc"}],"start":1483273203000,"end":1485778803000}' -->
+						<!-- 			last-response="{{data}}" --> <!-- 			on-response="_onResponseLatestData" -->
+						<!-- 			handleAs="json" --> <!-- 			> --> <!-- 		</iron-ajax> -->
+						<!-- url="http://10.56.69.54:9072/services/windservices/getGraphData?tagName=AC_Total_S_CB" -->
+
+						<!-- <div class="heading"> --> <!-- <img alt="" src="house.png" style="height: 20px;vertical-align: text-bottom;"> <b>TMTC-IT1 YIELD</b> -->
+						<!-- </div> --> <!-- <div id="container11" style="width: 100%; height: 270px; background:#FFF; color:#000"> -->
+
+						<px-vis-timeseries id="timeSeriesDataId" include-all-series="true"
+							enable-tooltip="true" prevent-resize="true" width="600"
+							height="180" selection-type="yAxis" register-location="none">
+						</px-vis-timeseries> <!--  </div>  --> </paper-material></td>
+
 				</tr>
 			</table>
 		</div>
@@ -120,5 +144,71 @@
 // 		      }
 		    });
 		  },
+		  
+// 			_onResponseLatestData : function(data){
+// 				var d = new Date();
+// 	      		var startDate = null, endDate = null;
+// 	      		var categories = data.detail.response.categories;
+// 				var values = data.detail.response.values;
+				
+// 				//values = data.detail.response.valuesMap.AC_Total_S_CB;
+// 				//var irrData = data.detail.response.valuesMap.Irradiance;
+// 				//alert(irrData);
+// 				var TEnergy = 0;
+// 				var arr=[],obj={};
+				
+// 				var value=0,count=0;
+// 				for(var t=0;t<=values.length-1;t++){
+// 					value = value+(values[t]/1000);
+// 					var dateInFor = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ categories[t]);
+// 					obj = {
+// 							"x" : dateInFor.getTime(),
+// 							"Power(KW)" : values[t]/1000
+// 							//"Irradience" : irrData[t]/20
+// 					}
+// 					arr.push(obj);
+// 					TEnergy = TEnergy+(values[t]/1000);
+					
+// 					if(startDate == null){
+// 						if(values[t] != 0){
+// 							startDate = categories[t];
+// 						}
+// 					}
+// 					if(startDate !=null){
+// 						if(values[t] == 0){
+// 							endDate = categories[t];
+// 						}
+// 					}
+// 				}
+// 				console.log("Value : "+ value +" Count : " + values.length);
+// 				if(endDate == null){
+// 					endDate = categories[values.length-1];
+// 				}
+// 				var timeStart = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ startDate).getHours();
+// 				var timeEnd = new Date(d.getDate()+"/"+d.toDateString().substr(4,3)+"/"+d.getFullYear()+" "+ endDate).getHours();
+// 				var hourDiff = timeEnd - timeStart;      
+// 				console.log("Total Energy : "+TEnergy +" in Whats");
+				
+// 				var vals = (TEnergy.toFixed(2));
+// 				var roundVal = Math.round(vals * 100) / 100
+// 				//$("#dashBEnergy").text(roundVal);
+// 				var currency = roundVal/hourDiff;
+// 				/* console.log(currency);
+// 				$("#mapPowerValId").text(Math.round(currency * 100) / 100).append("<sub>K&nbsp;Wh</sub>");
+// 				var amt = currency*12;
+// 				//alert(amt);
+// 				$("#revenueId").text(Math.round(amt * 100) / 100).append("<sub>&#x20B9;</sub>") */
+				
+// 				//$("#registerWrap").remove();
+// 				// data for graph
+// 				//console.log("<<<<<<<<<<<<"+JSON.stringify(arr)+">>>>>>>>>>>>>>");
+// 				$("#timeSeriesDataId").attr("chart-data",JSON.stringify(arr));
+// 				 this.async(function() {
+// 	          		 console.log("Graph Service Calling..");
+// 	                   this.$.ajaxLatestData.generateRequest();
+// 	                 }, 10000);
+// 			//if(this.loadValue10 == 0)
+// 	      		//this._trailgraph(categories,values);
+// 	      	},	
 		});
 </script> </dom-module>

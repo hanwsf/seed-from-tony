@@ -340,33 +340,27 @@ sub {
 
 .alpha {
   font-size: 5rem;
-  line-height: 1.06667;
-  font-weight: normal; }
+  line-height: 1.06667; }
 
 .beta {
   font-size: 4rem;
-  line-height: 1;
-  font-weight: normal; }
+  line-height: 1; }
 
 .gamma {
   font-size: 3rem;
-  line-height: 1.33333;
-  font-weight: normal; }
+  line-height: 1.33333; }
 
 .delta {
   font-size: 2rem;
-  line-height: 1.33333;
-  font-weight: normal; }
+  line-height: 1.33333; }
 
 .epsilon {
   font-size: 1.33333rem;
-  line-height: 1;
-  font-weight: normal; }
+  line-height: 1; }
 
 .zeta {
   font-size: 0.8rem;
-  line-height: 1.66667;
-  font-weight: normal; }
+  line-height: 1.66667; }
 
 html {
   position: relative;

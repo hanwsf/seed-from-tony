@@ -72,7 +72,8 @@
           </app-route>
           <px-view
             active="[[_blankpageActive]]"
-            element-href="/elements/views/blankpage-view.html">
+<!--             element-href="/elements/views/blankpage-view.html"> -->
+						element-href="/elements/views/dashboards-view.html">
           </px-view>
 
           <!-- 个人添加 -->
@@ -179,7 +180,8 @@
         // set default route to /dashboards, if change to securepage, doesn't work
         var l = window.location;
         if((l.hash === "#/" || l.hash === "") && l.pathname === "/") {
-          l.hash = "/securepage";
+         l.hash = "/securepage";
+
         }
       }
 
